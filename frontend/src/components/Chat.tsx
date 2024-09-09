@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { chatWithPersona } from '../services/api';
+import { personas, Persona } from '../data/personaData';
 import '../styles/Chat.css';
 
 interface Message {
@@ -8,37 +9,19 @@ interface Message {
   content: string;
 }
 
-interface Persona {
-  id: string;
-  name: string;
-  description: string;
-  avatarUrl: string;
-  context: string;
-}
-
-// This should be imported from a central location in a real app
-const personas: Persona[] = [
-  {
-    id: 'alexander-the-great',
-    name: 'Alexander the Great',
-    description: 'Macedonian king and military commander',
-    avatarUrl: '/placeholder-avatar.png',
-    context: 'You are Alexander the Great, the famous Macedonian king and military commander. Respond as he would, based on his known personality and the historical context of his time.'
-  },
-  // ... other personas
-];
-
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const { personaId } = useParams<{ personaId: string }>();
-  const persona = personas.find(p => p.id === personaId);
+  const [persona, setPersona] = useState<Persona | undefined>(undefined);
 
   useEffect(() => {
-    if (persona) {
-      setMessages([{ role: 'ai', content: `Hello, I am ${persona.name}. How may I assist you?` }]);
+    const selectedPersona = personas.find(p => p.id === personaId);
+    setPersona(selectedPersona);
+    if (selectedPersona) {
+      setMessages([{ role: 'ai', content: `Hello, I am ${selectedPersona.name}. How may I assist you?` }]);
     }
-  }, [persona]);
+  }, [personaId]);
 
   const handleSend = async () => {
     if (input.trim() && persona) {
