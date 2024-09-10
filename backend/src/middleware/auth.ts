@@ -17,23 +17,22 @@ declare global {
 export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers['authorization'];
-
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      console.log('No token provided');
-      return res.status(401).json({ message: 'No token provided' });
+      return res.status(401).json({ message: 'No token provided', tokenExpired: true });
     }
 
     jwt.verify(token, process.env.JWT_SECRET as string, async (err, decoded) => {
       if (err) {
-        console.log('Token verification failed:', err);
+        if (err.name === 'TokenExpiredError') {
+          return res.status(401).json({ message: 'Token expired', tokenExpired: true });
+        }
         return res.status(403).json({ message: 'Failed to authenticate token' });
       }
 
       const user = await User.findById((decoded as JwtPayload).id);
       if (!user) {
-        console.log('User not found');
         return res.status(404).json({ message: 'User not found' });
       }
 

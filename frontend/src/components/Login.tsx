@@ -16,8 +16,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     e.preventDefault();
     try {
       const data = await login(email, password);
-      localStorage.setItem('token', data.token);
-      console.log('Token stored:', data.token); // Add this line for debugging
+      localStorage.setItem('token', data.accessToken);
       setMessage('Login successful!');
       onLogin();
       navigate('/dashboard');
