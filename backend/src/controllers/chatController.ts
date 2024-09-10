@@ -24,7 +24,7 @@ export const chatWithPersona = async (req: Request, response: Response): Promise
     }
 
     // Fetch the persona from the database
-    const persona = await Persona.findOne({ id: personaId });
+    const persona = await Persona.findOne({ _id: personaId });
     if (!persona) {
       console.log('Persona not found');
       response.status(404).json({ message: 'Persona not found' });
@@ -34,7 +34,7 @@ export const chatWithPersona = async (req: Request, response: Response): Promise
     // Save user message
     await ChatMessage.create({
       userId,
-      personaId: persona.id,
+      personaId: persona._id,
       role: 'user',
       content: message
     });
@@ -44,7 +44,7 @@ export const chatWithPersona = async (req: Request, response: Response): Promise
     // Save AI response
     await ChatMessage.create({
       userId,
-      personaId: persona.id,
+      personaId: persona._id,
       role: 'ai',
       content: res
     });
@@ -73,7 +73,7 @@ export const getChatHistory = async (req: Request, res: Response): Promise<void>
     }
 
     // Verify that the persona exists
-    const persona = await Persona.findOne({ id: personaId });
+    const persona = await Persona.findOne({ _id: personaId });
     if (!persona) {
       console.log('Persona not found');
       res.status(404).json({ message: 'Persona not found' });

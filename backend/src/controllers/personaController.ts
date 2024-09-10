@@ -13,7 +13,7 @@ export const getAllPersonas = async (req: Request, res: Response): Promise<void>
 
 export const getPersonaById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const persona = await Persona.findOne({ id: req.params.id });
+    const persona = await Persona.findOne({ _id: req.params.id });
     if (!persona) {
       res.status(404).json({ message: 'Persona not found' });
       return;
