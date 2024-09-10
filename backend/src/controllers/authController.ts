@@ -85,3 +85,30 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     res.status(403).json({ message: 'Invalid refresh token' });
   }
 };
+
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = req.user; // The user object is now attached by the authenticateToken middleware
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordCorrect) {
+      res.status(400).json({ message: 'Current password is incorrect' });
+      return;
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};

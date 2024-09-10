@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Typography, Grid, Card, CardContent, CardMedia, CardActionArea, Container, CircularProgress } from '@mui/material';
 import { getAllPersonas } from '../services/api';
-import '../styles/PersonaDashboard.css';
 
 interface Persona {
   _id: string;
@@ -30,22 +30,43 @@ const PersonaDashboard: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading personas...</div>;
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
-    <div className="persona-dashboard">
-      <h2>Choose a Historical Persona to Chat With</h2>
-      <div className="persona-grid">
+    <Container maxWidth="lg">
+      <Typography variant="h4" component="h2" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
+        Choose a Historical Persona to Chat With
+      </Typography>
+      <Grid container spacing={4}>
         {personas.map((persona) => (
-          <Link to={`/chat/${persona._id}`} key={persona._id} className="persona-card">
-            <img src={persona.avatarUrl} alt={persona.name} className="persona-avatar" />
-            <h3>{persona.name}</h3>
-            <p>{persona.description}</p>
-          </Link>
+          <Grid item key={persona._id} xs={12} sm={6} md={4}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <CardActionArea component={Link} to={`/chat/${persona._id}`}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={persona.avatarUrl}
+                  alt={persona.name}
+                />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {persona.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {persona.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Container>
   );
 };
 

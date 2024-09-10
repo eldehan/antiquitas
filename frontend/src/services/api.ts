@@ -66,6 +66,11 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+export const changePassword = async (currentPassword: string, newPassword: string) => {
+  const response = await axiosInstance.post('/auth/change-password', { currentPassword, newPassword });
+  return response.data;
+};
+
 export const login = async (email: string, password: string) => {
   const response = await axiosInstance.post('/auth/login', { email, password });
   localStorage.setItem('token', response.data.accessToken);

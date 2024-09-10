@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { Typography, TextField, Button, Paper, Box, Avatar, CircularProgress, Container } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { chatWithPersona, getChatHistory, getPersonaById } from '../services/api';
-import '../styles/Chat.css';
 
 interface Message {
   _id: string;
@@ -24,6 +25,7 @@ const Chat: React.FC = () => {
   const { personaId } = useParams<{ personaId: string }>();
   const [persona, setPersona] = useState<Persona | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
     if (personaId) {
@@ -31,6 +33,10 @@ const Chat: React.FC = () => {
       fetchChatHistory(personaId);
     }
   }, [personaId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const fetchPersona = async (id: string) => {
     try {
@@ -69,35 +75,60 @@ const Chat: React.FC = () => {
     }
   };
 
-  if (isLoading || !persona) {
-    return <div>Loading chat...</div>;
+  if (isLoading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">
-        <img src={persona.avatarUrl} alt={persona.name} className="persona-avatar" />
-        <h2>Chat with {persona.name}</h2>
-        <p>{persona.description}</p>
-      </div>
-      <div className="chat-messages">
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      {persona && (
+        <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+          <Avatar src={persona.avatarUrl} alt={persona.name} sx={{ width: 56, height: 56, mr: 2 }} />
+          <Box>
+            <Typography variant="h5" component="h2" sx={{ color: 'primary.main' }}>
+              {persona.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {persona.description}
+            </Typography>
+          </Box>
+        </Box>
+      )}
+      <Paper elevation={3} sx={{ height: '60vh', overflow: 'auto', p: 2, mb: 2 }}>
         {messages.map((message) => (
-          <div key={message._id} className={`message ${message.role}`}>
-            {message.content}
-          </div>
+          <Box key={message._id} sx={{ mb: 2, textAlign: message.role === 'user' ? 'right' : 'left' }}>
+            <Paper elevation={1} sx={{ display: 'inline-block', p: 1, maxWidth: '70%', backgroundColor: message.role === 'user' ? 'primary.light' : 'background.paper' }}>
+              <Typography variant="body1">{message.content}</Typography>
+            </Paper>
+          </Box>
         ))}
-      </div>
-      <div className="chat-input">
-        <input
-          type="text"
+        <div ref={messagesEndRef} />
+      </Paper>
+      <Box sx={{ display: 'flex' }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Type your message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Type your message..."
+          sx={{ mr: 1 }}
         />
-        <button onClick={handleSend}>Send</button>
-      </div>
-    </div>
+        <Button
+          variant="contained"
+          color="primary"
+          endIcon={<SendIcon />}
+          onClick={handleSend}
+          sx={{ backgroundColor: 'primary.main', color: 'background.paper' }}
+        >
+          Send
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

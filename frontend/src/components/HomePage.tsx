@@ -1,41 +1,94 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import '../styles/HomePage.css';
+import { Typography, Button, Grid, Card, CardContent, CardMedia, Container } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 interface HomePageProps {
   isAuthenticated: boolean;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ isAuthenticated }) => {
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
-  }
-
   return (
-    <div className="home-page">
-      <h1>Welcome to Historical Persona Chat</h1>
-      <p>Step into the past and converse with history's most fascinating figures!</p>
-      <div className="feature-grid">
-        <div className="feature">
-          <img src="/path-to-image1.jpg" alt="Historical figure" />
-          <h3>Chat with Historical Figures</h3>
-          <p>Engage in conversations with famous personalities from the past.</p>
-        </div>
-        <div className="feature">
-          <img src="/path-to-image2.jpg" alt="AI technology" />
-          <h3>Powered by AI</h3>
-          <p>Experience intelligent responses crafted by advanced AI technology.</p>
-        </div>
-        <div className="feature">
-          <img src="/path-to-image3.jpg" alt="Learning" />
-          <h3>Learn History Interactively</h3>
-          <p>Gain insights into historical events and perspectives through dialogue.</p>
-        </div>
+    <Container maxWidth="lg">
+      <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.main' }}>
+        Welcome to Antiquitas Interactive
+      </Typography>
+      <Typography variant="h5" align="center" color="text.secondary" paragraph>
+        Step into the past and converse with history's most fascinating figures!
+      </Typography>
+      <Grid container spacing={4} sx={{ mt: 4 }}>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="140"
+              image="/path-to-image1.jpg"
+              alt="Historical figure"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Chat with Historical Figures
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Engage in conversations with famous personalities from the past.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="140"
+              image="/path-to-image2.jpg"
+              alt="AI technology"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Powered by AI
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Experience intelligent responses crafted by advanced AI technology.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="140"
+              image="/path-to-image3.jpg"
+              alt="Learning"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Learn History Interactively
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Gain insights into historical events and perspectives through dialogue.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+        <Button
+          component={Link}
+          to={isAuthenticated ? "/dashboard" : "/login"}
+          variant="contained"
+          size="large"
+          sx={{
+            backgroundColor: 'primary.main',
+            color: 'background.paper',
+            '&:hover': {
+              backgroundColor: 'primary.dark',
+            },
+          }}
+        >
+          {isAuthenticated ? "Go to Dashboard" : "Get Started"}
+        </Button>
       </div>
-      <div className="cta">
-        <Link to="/login" className="cta-button">Get Started</Link>
-      </div>
-    </div>
+    </Container>
   );
 };
 
