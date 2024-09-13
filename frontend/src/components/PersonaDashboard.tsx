@@ -46,7 +46,6 @@ const PersonaDashboard: React.FC = () => {
       <Typography variant="h1" component="h1" gutterBottom sx={{
         mb: 6,
         textAlign: 'center',
-        fontFamily: "'Tulpen One', sans-serif",
         fontSize: { xs: '2rem', sm: '3rem', md: '6rem' }
       }}>
         Historical Personas
@@ -86,7 +85,6 @@ const PersonaDashboard: React.FC = () => {
                     }}
                   >
                     <Typography variant="h4" component="div" sx={{
-                      fontFamily: "'Tulpen One', sans-serif",
                       fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem', lg: '5rem' },
                       lineHeight: 1.2,
                       borderBottom: '2px solid white',
@@ -98,7 +96,6 @@ const PersonaDashboard: React.FC = () => {
                     </Typography>
                     <Typography variant="body2" sx={{
                       mb: 2,
-                      fontFamily: "'Montserrat', sans-serif",
                       fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
                       lineHeight: 1.6,
                       overflow: 'hidden',

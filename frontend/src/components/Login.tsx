@@ -37,7 +37,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ color: 'primary.main' }}>
+        <Typography component="h1" variant="h3" sx={{ color: 'primary.main' }}>
           Login
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, Link, useLocation } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline, Button, Box, AppBar, Toolbar, Typography, Drawer, List, ListItemButton, ListItemText, IconButton, Menu, MenuItem } from '@mui/material';
+import { ThemeProvider, CssBaseline, Button, Box, AppBar, Toolbar, Typography, Drawer, List, ListItemButton, ListItemText, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import HomePage from './components/HomePage';
 import About from './components/About';
 import Contact from './components/Contact';
@@ -16,152 +11,11 @@ import Login from './components/Login';
 import Chat from './components/Chat';
 import PersonaDashboard from './components/PersonaDashboard';
 import Profile from './components/Profile';
+import DrawerContent from './components/DrawerContent';
 import { logout, setAuthToken } from './services/api';
+import theme from './theme/theme';
 
 const drawerWidth = 240;
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#bf9f45',
-    },
-    background: {
-      default: '#121212',
-      paper: '#1E1E1E',
-    },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 700,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-  typography: {
-    fontFamily: "'Montserrat', sans-serif",
-    h1: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '6.5rem',
-    },
-    h2: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '5rem',
-    },
-    h3: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '3.5rem',
-    },
-    h4: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '2rem',
-    },
-    h5: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '1.5rem',
-    },
-    h6: {
-      fontFamily: "'Tulpen One', sans-serif",
-      fontSize: '1.25rem',
-    },
-    body1: {
-      fontSize: '1rem',
-    },
-    body2: {
-      fontSize: '0.875rem',
-    },
-  },
-});
-
-const menuItems = [
-  { number: '01', text: 'home', path: '/' },
-  { number: '02', text: 'personas', path: '/dashboard' },
-  { number: '03', text: 'about', path: '/about' },
-  { number: '04', text: 'contact', path: '/contact' },
-  { number: '05', text: 'topics', path: '/topics', isNew: true },
-];
-
-function DrawerContent({ handleDrawerToggle }: { handleDrawerToggle: () => void }) {
-  const location = useLocation();
-
-  return (
-    <Box sx={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      bgcolor: 'rgba(0, 0, 0, 0.9)',
-      color: 'white',
-    }}>
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <IconButton onClick={handleDrawerToggle} sx={{ color: 'white' }}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <List sx={{ flexGrow: 1 }}>
-        {menuItems.map((item, index) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <ListItemButton
-              key={index}
-              component={Link}
-              to={item.path}
-              sx={{
-                py: 2,
-                position: 'relative',
-                '&::before': isActive ? {
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '4px',
-                  height: '50%',
-                  backgroundColor: 'primary.main',
-                } : {},
-              }}
-            >
-              <ListItemText
-                primary={
-                  <Typography variant="h2" sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: isActive ? 'primary.main' : 'inherit',
-                  }}>
-                    <span style={{ fontSize: '0.8rem', marginRight: '1rem', color: '#bf9f45' }}>{item.number}</span>
-                    {item.text}
-                    {item.isNew && (
-                      <span style={{
-                        marginLeft: '0.5rem',
-                        fontSize: '0.6rem',
-                        backgroundColor: '#ff4444',
-                        color: 'white',
-                        padding: '2px 4px',
-                        borderRadius: '2px'
-                      }}>
-                        NEW
-                      </span>
-                    )}
-                  </Typography>
-                }
-              />
-            </ListItemButton>
-          );
-        })}
-      </List>
-      <Box sx={{ p: 2, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>FOLLOW HISTORY</Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <FacebookIcon />
-          <InstagramIcon />
-          <YouTubeIcon />
-          <TwitterIcon />
-        </Box>
-      </Box>
-    </Box>
-  );
-}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
@@ -199,7 +53,7 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Box sx={{ display: 'flex' }}>
