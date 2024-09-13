@@ -9,10 +9,10 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ isAuthenticated }) => {
   return (
     <Container maxWidth="lg">
-      <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.main' }}>
+      <Typography variant="h1" component="h1" gutterBottom align="center" sx={{ color: 'primary.main' }}>
         Welcome to Antiquitas Interactive
       </Typography>
-      <Typography variant="h5" align="center" color="text.secondary" paragraph>
+      <Typography variant="h3" align="center" color="text.secondary" paragraph>
         Step into the past and converse with history's most fascinating figures!
       </Typography>
       <Grid container spacing={4} sx={{ mt: 4 }}>

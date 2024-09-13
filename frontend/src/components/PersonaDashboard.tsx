@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Grid, Card, CardContent, CardMedia, CardActionArea, Container, CircularProgress } from '@mui/material';
+import { Typography, Grid, Card, CardActionArea, Container, CircularProgress, Box, useMediaQuery, useTheme } from '@mui/material';
 import { getAllPersonas } from '../services/api';
 
 interface Persona {
@@ -8,11 +8,15 @@ interface Persona {
   name: string;
   description: string;
   avatarUrl: string;
+  birthDate: string;
+  deathDate: string;
 }
 
 const PersonaDashboard: React.FC = () => {
   const [personas, setPersonas] = useState<Persona[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const theme = useTheme();
+  const isWideScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     fetchPersonas();
@@ -38,29 +42,76 @@ const PersonaDashboard: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h4" component="h2" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
-        Choose a Historical Persona to Chat With
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h1" component="h1" gutterBottom sx={{
+        mb: 6,
+        textAlign: 'center',
+        fontFamily: "'Tulpen One', sans-serif",
+        fontSize: { xs: '2rem', sm: '3rem', md: '6rem' }
+      }}>
+        Historical Personas
       </Typography>
       <Grid container spacing={4}>
         {personas.map((persona) => (
-          <Grid item key={persona._id} xs={12} sm={6} md={4}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <CardActionArea component={Link} to={`/chat/${persona._id}`}>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={persona.avatarUrl}
-                  alt={persona.name}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {persona.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {persona.description}
-                  </Typography>
-                </CardContent>
+          <Grid item key={persona._id} xs={12} lg={6}>
+            <Card sx={{ bgcolor: 'transparent', boxShadow: 'none', height: '100%' }}>
+              <CardActionArea component={Link} to={`/chat/${persona._id}`} sx={{ height: '100%' }}>
+                <Box sx={{ position: 'relative', paddingTop: isWideScreen ? '75%' : '56.25%', overflow: 'hidden' }}>
+                  <Box
+                    component="img"
+                    src={persona.avatarUrl}
+                    alt={persona.name}
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+                      color: 'white',
+                      padding: { xs: '16px', sm: '20px', md: '24px' },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <Typography variant="h4" component="div" sx={{
+                      fontFamily: "'Tulpen One', sans-serif",
+                      fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem', lg: '5rem' },
+                      lineHeight: 1.2,
+                      borderBottom: '2px solid white',
+                      pb: 0.5,
+                      mb: 1,
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.7)'
+                    }}>
+                      {persona.name}
+                    </Typography>
+                    <Typography variant="body2" sx={{
+                      mb: 2,
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
+                      lineHeight: 1.6,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: { xs: 2, sm: 3 },
+                      WebkitBoxOrient: 'vertical',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}>
+                      {persona.description}
+                    </Typography>
+                  </Box>
+                </Box>
               </CardActionArea>
             </Card>
           </Grid>
