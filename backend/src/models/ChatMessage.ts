@@ -5,6 +5,7 @@ const ChatMessageSchema = new mongoose.Schema({
   personaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Persona', required: true },
   role: { type: String, enum: ['user', 'ai'], required: true },
   content: { type: String, required: true },
+  contextualExplanations: { type: Map, of: String },
   timestamp: { type: Date, default: Date.now }
 });
 

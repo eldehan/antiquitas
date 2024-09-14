@@ -39,18 +39,19 @@ export const chatWithPersona = async (req: Request, response: Response): Promise
       content: message
     });
 
-    const res = await generateResponse(persona.name, persona.context, message);
+    const { response: aiResponse, contextualExplanations } = await generateResponse(persona.name, persona.context, message);
 
     // Save AI response
     await ChatMessage.create({
       userId,
       personaId: persona._id,
       role: 'ai',
-      content: res
+      content: aiResponse,
+      contextualExplanations
     });
 
     console.log('Chat response sent');
-    response.status(200).json({ response: res });
+    response.status(200).json({ response: aiResponse, contextualExplanations });
   } catch (error) {
     console.error('Error in chat controller:', error);
     response.status(500).json({ message: 'An error occurred while processing your request' });
