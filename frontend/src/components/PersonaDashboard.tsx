@@ -25,7 +25,10 @@ const PersonaDashboard: React.FC = () => {
   const fetchPersonas = async () => {
     try {
       const fetchedPersonas = await getAllPersonas();
-      setPersonas(fetchedPersonas);
+      const sortedPersonas = fetchedPersonas.sort((a: Persona, b: Persona) =>
+        a.name.localeCompare(b.name)
+      );
+      setPersonas(sortedPersonas);
     } catch (error) {
       console.error('Error fetching personas:', error);
     } finally {
@@ -42,11 +45,10 @@ const PersonaDashboard: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h1" component="h1" gutterBottom sx={{
-        mb: 6,
+    <Container maxWidth="lg" sx={{ py: 2 }}>
+      <Typography variant="h1" component="h1" color="primary" gutterBottom sx={{
+        mb: 3,
         textAlign: 'center',
-        fontSize: { xs: '2rem', sm: '3rem', md: '6rem' }
       }}>
         Historical Personas
       </Typography>
