@@ -2,6 +2,8 @@
 
 Antiquitas Interactive is a web application that allows users to engage in conversations with historical figures from the ancient Mediterranean world. This project aims to bridge the gap between academic historical study and interactive digital experiences.
 
+**This is the initial repository for Antiquitas Interactive, built with Create React App and with separate frontend and backends. The latest iteration of the project, built with Next.js, can be found [here](https://github.com/eldehan/antiquitas-nextjs).**
+
 ## Features
 
 - Chat with AI-powered historical personas
